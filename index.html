@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hugo QA × GiftHealth · Lilly Chat — Quality Is the Product</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E1F1A; --ink-soft:#33443D; --slate:#5E6F67;
+    --surface:#F4F7F5; --card:#FFFFFF; --line:#DCE5E0;
+    --green:#166B4A; --green-bright:#22A06B; --mint:#E4F3EB;
+    --alert:#B23A25; --alert-bg:#FBEFEC; --amber:#C98A1B; --amber-bg:#FBF3E3;
+    --blue:#2E7DB2; --violet:#6D5BC7; --radius:14px;
+    --display:'Space Grotesk',system-ui,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,monospace;
+    --body:'Inter',system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{font-family:var(--body);background:var(--surface);color:var(--ink);overflow:hidden;line-height:1.5}
+
+  /* ---------- deck machinery ---------- */
+  .deck{height:100vh;height:100dvh;position:relative;overflow:hidden}
+  .slide{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:clamp(22px,4.5vw,64px) clamp(22px,6.5vw,92px) clamp(88px,12vh,118px);
+    opacity:0;pointer-events:none;
+    transform:translateX(40px);
+    transition:opacity .45s ease,transform .45s ease;
+    overflow-y:auto;
+  }
+  .slide.tall{justify-content:flex-start}
+  .slide.active{opacity:1;pointer-events:auto;transform:translateX(0)}
+  .slide.prev{transform:translateX(-40px)}
+  @media (prefers-reduced-motion:reduce){
+    .slide{transition:opacity .2s ease;transform:none !important}
+    .reveal{transition:none !important;transform:none !important;opacity:1 !important}
+    .fillbar i{transition:none !important;transform:scaleX(1) !important}
+    .live::before{animation:none !important}
+  }
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+  .slide.active .reveal{opacity:1;transform:translateY(0)}
+  .slide.active .r1{transition-delay:.05s}
+  .slide.active .r2{transition-delay:.15s}
+  .slide.active .r3{transition-delay:.25s}
+  .slide.active .r4{transition-delay:.35s}
+  .slide.active .r5{transition-delay:.45s}
+  .slide.active .r6{transition-delay:.55s}
+
+  /* ---------- shared type ---------- */
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--green);font-weight:600;
+    display:flex;align-items:center;gap:10px;margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--green);display:inline-block}
+  h1{font-family:var(--display);font-weight:700;font-size:clamp(38px,6vw,76px);line-height:1.02;letter-spacing:-.02em}
+  h2{font-family:var(--display);font-weight:700;font-size:clamp(26px,3.4vw,44px);line-height:1.06;letter-spacing:-.015em;margin-bottom:12px}
+  .lede{font-size:clamp(14px,1.35vw,17px);line-height:1.55;color:var(--ink-soft);max-width:64ch}
+  .mono-label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate);font-weight:500}
+  .thesis{
+    margin-top:24px;border-left:3px solid var(--green);padding:4px 0 4px 18px;
+    font-family:var(--display);font-size:clamp(16px,1.7vw,20px);font-weight:500;max-width:58ch;
+  }
+
+  /* ---------- story cover ---------- */
+  .story-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px;margin-top:26px}
+  .sblock{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:19px 20px}
+  .sblock .sk{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);font-weight:600;display:block;margin-bottom:8px}
+  .sblock p{font-size:13px;line-height:1.6;color:var(--ink-soft)}
+  .sblock p b{color:var(--ink)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chip{font-family:var(--mono);font-size:10px;letter-spacing:.04em;border-radius:99px;padding:5px 11px;font-weight:600;color:#fff}
+  .statband{
+    display:flex;flex-wrap:wrap;gap:0;margin-top:14px;background:var(--ink);border-radius:16px;overflow:hidden;
+  }
+  .statband .stat{flex:1;min-width:150px;padding:18px 20px;border-right:1px solid rgba(255,255,255,.1)}
+  .statband .stat:last-child{border-right:none}
+  .statband .stat b{display:block;font-family:var(--display);font-size:24px;font-weight:700;color:#7CE0AE;letter-spacing:-.02em}
+  .statband .stat span{font-size:11px;color:#B9C7C0;line-height:1.4;display:block;margin-top:3px}
+  .cta-line{font-family:var(--mono);font-size:11px;color:var(--slate);margin-top:16px}
+  .cta-line b{color:var(--green);font-weight:600}
+
+  /* ---------- nav ---------- */
+  .rail{
+    position:fixed;left:0;right:0;bottom:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:13px clamp(22px,6.5vw,92px);
+    background:linear-gradient(to top,var(--surface) 65%,transparent);
+  }
+  .rail-steps{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+  .step{
+    font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+    border:none;background:transparent;color:var(--slate);cursor:pointer;
+    padding:7px 9px;border-radius:99px;transition:all .2s;font-weight:500;
+  }
+  .step:hover{color:var(--ink)}
+  .step.on{background:var(--ink);color:#fff}
+  .step:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+  .arrows{display:flex;gap:8px}
+  .arrow{
+    width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);
+    background:var(--card);color:var(--ink);cursor:pointer;font-size:15px;
+    display:grid;place-items:center;transition:all .2s;
+  }
+  .arrow:hover{border-color:var(--ink);transform:translateY(-1px)}
+  .arrow:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+  .counter{font-family:var(--mono);font-size:11px;color:var(--slate);margin-right:12px}
+
+  /* ---------- cover ---------- */
+  .cover-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:20px}
+  .cover-brand{font-family:var(--mono);font-size:13px;letter-spacing:.16em;color:var(--ink);font-weight:600}
+  .cover-brand em{font-style:normal;color:var(--green)}
+  .score-chip{
+    display:inline-flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+    background:var(--ink);color:#fff;border-radius:99px;padding:12px 22px;margin-top:32px;
+  }
+  .score-chip .big{font-family:var(--display);font-size:30px;font-weight:700;color:#7CE0AE}
+  .score-chip .sub{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
+  .score-chip .delta{font-family:var(--mono);font-size:12px;color:#7CE0AE;font-weight:600}
+  .cover-foot{margin-top:40px;display:flex;gap:32px;flex-wrap:wrap}
+  .cover-foot .fact b{display:block;font-family:var(--display);font-size:21px;font-weight:600}
+  .cover-foot .fact span{font-size:12.5px;color:var(--slate)}
+  .kbd-hint{font-family:var(--mono);font-size:11px;color:var(--slate);margin-top:36px}
+  .kbd-hint kbd{border:1px solid var(--line);background:var(--card);border-radius:5px;padding:2px 7px;font-family:inherit}
+
+  /* ---------- stakes ---------- */
+  .stake-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:26px}
+  .stake{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 20px 18px}
+  .stake .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--alert);font-weight:600;margin-bottom:9px;display:block}
+  .stake p{font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
+
+  /* ---------- framework pillars ---------- */
+  .pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:13px;margin-top:26px}
+  .pillar{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px;display:flex;flex-direction:column;gap:8px;border-top:4px solid var(--pc,var(--green));
+  }
+  .pillar .w{font-family:var(--mono);font-size:11px;color:var(--slate);background:var(--surface);border-radius:99px;padding:3px 9px;align-self:flex-start}
+  .pillar h3{font-family:var(--display);font-size:15.5px;font-weight:600;line-height:1.25}
+  .pillar p{font-size:12.5px;line-height:1.5;color:var(--slate)}
+  .pillar ul{list-style:none;margin-top:2px}
+  .pillar li{font-size:12px;color:var(--ink-soft);padding:3px 0;border-top:1px dashed var(--line)}
+
+  /* ---------- auto-fail ---------- */
+  .fail-band{background:var(--alert-bg);border:1.5px solid #ECC9C0;border-radius:var(--radius);padding:22px;margin-top:24px}
+  .fail-band .mono-label{color:var(--alert)}
+  .fails{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:0 30px;margin-top:12px}
+  .fail{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid #ECD5CE;font-size:13px;line-height:1.45;color:#5A2A1E}
+  .fail::before{content:"⛔";font-size:13px;flex:none;margin-top:1px}
+  .fail-note{margin-top:20px;font-size:14px;color:var(--ink-soft);max-width:66ch;line-height:1.55}
+  .fail-note b{color:var(--ink)}
+
+  /* ---------- process ---------- */
+  .proc{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:26px}
+  @media(max-width:800px){.proc{grid-template-columns:1fr}}
+  .proc-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+  .proc-card h3{font-family:var(--display);font-size:17px;font-weight:600;margin-bottom:12px}
+  .cadence{display:flex;flex-direction:column;gap:8px}
+  .cad{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:13.5px}
+  .cad b{font-family:var(--mono);font-size:12.5px;color:var(--green);white-space:nowrap;font-weight:600}
+  .checks{list-style:none}
+  .checks li{padding:6px 0 6px 26px;position:relative;font-size:13.5px;color:var(--ink-soft);border-bottom:1px dashed var(--line)}
+  .checks li::before{content:"✓";position:absolute;left:2px;color:var(--green-bright);font-weight:700}
+
+  /* ---------- DASHBOARD SLIDE ---------- */
+  .dash-frame{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:18px;margin-top:18px;box-shadow:0 10px 30px rgba(14,31,26,.06);
+  }
+  .dash-titlebar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+  .dash-titlebar .crumbs{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#9AA8A1;font-weight:600}
+  .live{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--green-bright);display:flex;align-items:center;gap:6px;font-weight:600}
+  .live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green-bright);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .scroll-hint{font-family:var(--mono);font-size:10.5px;color:var(--slate);margin-top:10px}
+
+  .dsect{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);font-weight:600;margin:20px 0 4px;display:flex;align-items:center;gap:10px}
+  .dsect::after{content:"";flex:1;height:1px;background:var(--line)}
+  .dsect-sub{font-size:12px;color:var(--slate);margin-bottom:10px}
+
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+  .kpi{background:#FDFEFD;border:1px solid var(--line);border-radius:11px;padding:13px 14px}
+  .kpi .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#9AA8A1;font-weight:600}
+  .kpi .n{font-family:var(--display);font-size:26px;font-weight:700;margin-top:4px;letter-spacing:-.02em}
+  .kpi .n.good{color:var(--green-bright)}
+  .kpi .d{font-family:var(--mono);font-size:10px;color:var(--slate);margin-top:3px}
+  .kpi .d.up{color:var(--green-bright)}
+  .kpi .d.dim{color:#9AA8A1}
+
+  .dd-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px}
+  .dd{background:#FDFEFD;border:1px solid var(--line);border-radius:11px;padding:15px;border-top:4px solid var(--pc)}
+  .dd-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .dd-head h3{font-family:var(--display);font-size:14px;font-weight:600;line-height:1.25;max-width:22ch}
+  .dd-head .sc{font-family:var(--display);font-size:23px;font-weight:700;color:var(--green-bright)}
+  .dd-meta{display:flex;gap:8px;align-items:center;margin:6px 0 10px}
+  .dd-meta .wt{font-family:var(--mono);font-size:10px;color:var(--slate);background:var(--surface);border-radius:99px;padding:3px 9px}
+  .dd-meta .dv{font-family:var(--mono);font-size:10px;color:var(--slate)}
+  .dd-meta .status{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--green-bright);background:var(--mint);border-radius:99px;padding:3px 9px;font-weight:600}
+  .sub{display:grid;grid-template-columns:1fr 84px 38px;align-items:center;gap:10px;padding:6px 0;border-top:1px dashed var(--line);font-size:12px;color:var(--ink-soft)}
+  .fillbar{height:5px;border-radius:99px;background:#EDF1EF;overflow:hidden}
+  .fillbar i{display:block;height:100%;border-radius:99px;background:var(--pc);transform:scaleX(0);transform-origin:left;transition:transform .9s cubic-bezier(.2,.7,.2,1) .25s}
+  .slide.active .fillbar i{transform:scaleX(1)}
+  .sub .v{font-family:var(--mono);font-size:11px;color:var(--slate);text-align:right}
+  .sub.watch .v{color:var(--amber);font-weight:600}
+  .sub.watch .fillbar i{background:var(--amber)}
+
+  .dist{display:flex;height:28px;border-radius:8px;overflow:hidden}
+  .dist div{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10.5px;color:#fff;font-weight:600;min-width:24px}
+  .dist-caps{display:flex;gap:18px;margin-top:8px;flex-wrap:wrap;font-size:11.5px;color:var(--slate)}
+  .dist-caps i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px}
+
+  .roster-tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  .roster-tools input{
+    flex:1;min-width:170px;border:1px solid var(--line);border-radius:9px;background:#FDFEFD;
+    font-family:var(--body);font-size:12.5px;padding:8px 12px;color:var(--ink);
+  }
+  .roster-tools input:focus{outline:2px solid var(--green);outline-offset:1px}
+  .fbtn{
+    font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;font-weight:600;
+    border:1px solid var(--line);background:#FDFEFD;color:var(--slate);border-radius:99px;
+    padding:7px 12px;cursor:pointer;transition:all .15s;
+  }
+  .fbtn:hover{border-color:var(--ink);color:var(--ink)}
+  .fbtn.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .fbtn:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+  .rtable{background:#FDFEFD;border:1px solid var(--line);border-radius:11px;overflow:hidden}
+  .rscroll{max-height:330px;overflow-y:auto}
+  table{width:100%;border-collapse:collapse}
+  thead th{
+    font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#9AA8A1;
+    text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);background:#FBFCFB;
+    position:sticky;top:0;font-weight:600;z-index:2;
+  }
+  thead th:nth-child(1){width:48px}
+  thead th:nth-child(3),thead th:nth-child(4){text-align:right}
+  thead th:nth-child(5){text-align:center;width:104px}
+  tbody td{padding:7px 13px;border-bottom:1px solid #EEF2F0;font-size:12px}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#F7FAF8}
+  td.rk{font-family:var(--mono);font-size:10.5px;color:#9AA8A1}
+  td.ev,td.cp{text-align:right;font-family:var(--mono);font-size:11.5px}
+  td.cp{font-weight:600}
+  .st{font-family:var(--mono);font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;border-radius:99px;padding:3px 9px;font-weight:600;display:inline-block}
+  .st.ontrack{background:var(--mint);color:var(--green)}
+  .st.solid{background:var(--amber-bg);color:var(--amber)}
+  .st.watch{background:var(--alert-bg);color:var(--alert)}
+  td.stc{text-align:center}
+  .rcount{font-family:var(--mono);font-size:10.5px;color:var(--slate);margin-top:7px}
+
+  .sig-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+  .sigc{background:#FDFEFD;border:1px solid var(--line);border-radius:11px;padding:15px}
+  .sigc .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:600;display:block;margin-bottom:7px}
+  .sigc h3{font-family:var(--display);font-size:14px;font-weight:600;margin-bottom:5px}
+  .sigc p{font-size:12px;color:var(--slate);line-height:1.5}
+  .sigc .num{font-family:var(--display);font-size:21px;font-weight:700;color:var(--amber);margin-bottom:3px}
+  .cov{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+  .cov div{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-soft);border-bottom:1px dashed var(--line);padding-bottom:6px}
+  .cov b{font-family:var(--mono);font-size:11.5px;font-weight:600}
+
+  /* ---------- signals narrative ---------- */
+  .sig-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:24px}
+  .sig{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+  .sig .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:600;margin-bottom:9px;display:block}
+  .sig h3{font-family:var(--display);font-size:16px;font-weight:600;margin-bottom:7px}
+  .sig p{font-size:13px;line-height:1.55;color:var(--slate)}
+  .sig .num{font-family:var(--display);font-size:26px;font-weight:700;color:var(--amber);margin-bottom:4px}
+
+  /* ---------- value ---------- */
+  .value-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:26px}
+  .val{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+  .val .ic{width:34px;height:34px;border-radius:9px;background:var(--mint);display:grid;place-items:center;font-size:16px;margin-bottom:12px}
+  .val h3{font-family:var(--display);font-size:16.5px;font-weight:600;margin-bottom:7px}
+  .val p{font-size:13px;line-height:1.55;color:var(--slate)}
+
+  /* ---------- close ---------- */
+  .close-card{background:var(--ink);color:#fff;border-radius:20px;padding:clamp(26px,4vw,50px);margin-top:24px}
+  .close-card h2{color:#fff;margin-bottom:10px}
+  .close-card .lede{color:#B9C7C0}
+  .next{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:28px}
+  .next-item{border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:18px}
+  .next-item .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#7CE0AE;font-weight:600;margin-bottom:8px}
+  .next-item p{font-size:13.5px;line-height:1.5;color:#DCE5E0}
+  .next-item ul{list-style:none;margin-top:8px}
+  .next-item li{font-size:12.5px;line-height:1.5;color:#DCE5E0;padding:5px 0 5px 16px;position:relative;border-top:1px dashed rgba(255,255,255,.14)}
+  .next-item li::before{content:"→";position:absolute;left:0;color:#7CE0AE;font-size:11px}
+  .ask-math{display:flex;align-items:stretch;gap:0;margin:24px 0 4px;border:1px solid rgba(255,255,255,.16);border-radius:12px;overflow:hidden;flex-wrap:wrap}
+  .ask-math .m{flex:1;min-width:150px;padding:16px 18px;border-right:1px solid rgba(255,255,255,.12);position:relative}
+  .ask-math .m:last-child{border-right:none}
+  .ask-math .m b{display:block;font-family:var(--display);font-size:26px;font-weight:700;color:#7CE0AE;letter-spacing:-.02em}
+  .ask-math .m span{font-size:11.5px;color:#B9C7C0;line-height:1.4;display:block;margin-top:3px}
+  .roadmap-note{
+    border-left:3px solid #7CE0AE;padding:4px 0 4px 16px;margin:22px 0 4px;
+    font-size:13.5px;line-height:1.6;color:#DCE5E0;max-width:72ch;
+  }
+  .roadmap-note b{color:#fff}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- 1 · COVER / STORY -->
+  <section class="slide tall active" data-name="Cover">
+    <div class="cover-top reveal r1">
+      <div class="cover-brand">HUGO <em>QA</em> × GIFTHEALTH · LILLY CHAT</div>
+      <div class="mono-label">Quality Assurance Program · June 2026 MBR</div>
+    </div>
+    <h1 class="reveal r2" style="margin-top:26px;font-size:clamp(32px,4.6vw,58px)">The QA layer behind<br>Lilly Chat.</h1>
+    <p class="lede reveal r2" style="margin-top:14px">We launched the Lilly workflow in December 2025 as a chat-only operation — and layered on a dedicated QA team from the start, to ensure every patient conversation met the same clinical, compliance, and experience standard from the very first ticket.</p>
+
+    <div class="story-grid">
+      <div class="sblock reveal r3">
+        <span class="sk">How the standard was built</span>
+        <p>At launch, we reviewed tickets that <b>patients themselves had rated as good</b> and balanced that against our training detail on what good looks like. From both, we built a QA framework on <b>five pillars</b>:</p>
+        <div class="chips">
+          <span class="chip" style="background:#166B4A">Accuracy &amp; Compliance</span>
+          <span class="chip" style="background:#6D5BC7">Risk Prevention</span>
+          <span class="chip" style="background:#2E7DB2">Communication &amp; CX</span>
+          <span class="chip" style="background:#C98A1B">System Use &amp; Documentation</span>
+          <span class="chip" style="background:#B23A25">Professional Conduct</span>
+        </div>
+      </div>
+      <div class="sblock reveal r3">
+        <span class="sk">How we sample</span>
+        <p><b>5–15 tickets per agent per week</b> depending on tenure, plus <b>100% review of every DSAT</b>. A blend of random, targeted, thematic, and risk-driven selection — fairness for agents, priority coverage where patient safety lives. It lets us zero in on <b>what really matters, where it matters</b>.</p>
+      </div>
+      <div class="sblock reveal r4">
+        <span class="sk">What it enables</span>
+        <p>Our QA layer is one of the primary reasons <b>CSAT has held above 90% consistently</b> — and it gives new hires the review density they need to ramp fast. The volume of sampling lets us maintain a <b>maximum 1:20 QA-to-agent ratio</b>.</p>
+      </div>
+      <div class="sblock reveal r4">
+        <span class="sk">Why a dedicated team</span>
+        <p>This depth can't ride along with team leadership. TLs already carry <b>attendance, adherence, real-time feedback and coaching, escalations, and admin</b> — 1,400+ full-depth reviews a month requires its own function, or it simply doesn't happen at this rigor.</p>
+      </div>
+      <div class="sblock reveal r5" style="grid-column:1/-1">
+        <span class="sk">Not isolated checkmarks — a story</span>
+        <p>Every week, the QA team collates trends and insights across all reviews and feeds them to the training team. General knowledge gaps become <b>targeted retraining before they become patterns</b> — the reviews don't just score the past, they steer the next month.</p>
+      </div>
+    </div>
+
+    <div class="statband reveal r5">
+      <div class="stat"><b>90%+</b><span>CSAT, held consistently</span></div>
+      <div class="stat"><b>94.9%</b><span>QA composite · June, ▲ 0.5 vs May</span></div>
+      <div class="stat"><b>1,421</b><span>full-depth reviews in June · 178 agents</span></div>
+      <div class="stat"><b>1:20</b><span>max QA-to-agent ratio</span></div>
+    </div>
+    <div class="cta-line reveal r6">Here's what that system produced in June <b>→ Dashboard</b> &nbsp;·&nbsp; Navigate with ← → or the rail below &nbsp;·&nbsp; ↕ this slide scrolls</div>
+  </section>
+
+  <!-- 2 · FRAMEWORK -->
+  <section class="slide tall" data-name="Framework">
+    <div class="eyebrow reveal r1">01 · The standard we hold</div>
+    <h2 class="reveal r2">Every ticket, measured the same way.</h2>
+    <p class="lede reveal r2">A weighted rubric built for specialty-pharmacy support — five pillars, eleven scored sub-criteria, weights that follow risk. Accuracy and safety carry more than half the score.</p>
+
+    <div class="pillars reveal r3">
+      <div class="pillar" style="--pc:#166B4A">
+        <span class="w">Weight 35%</span><h3>Accuracy &amp; Compliance</h3>
+        <p>Facts, rules, policy, and safety handling.</p>
+        <ul><li>Policy &amp; rule application</li><li>Compliance &amp; safety</li><li>Workflow execution</li></ul>
+      </div>
+      <div class="pillar" style="--pc:#6D5BC7">
+        <span class="w">Weight 20%</span><h3>Detection &amp; Risk Prevention</h3>
+        <p>Spotting red flags before they escalate.</p>
+        <ul><li>Risk identification</li><li>Proactive prevention</li></ul>
+      </div>
+      <div class="pillar" style="--pc:#2E7DB2">
+        <span class="w">Weight 20%</span><h3>Communication &amp; CX</h3>
+        <p>Structured, personal, easy to follow.</p>
+        <ul><li>Greeting, personalization &amp; rapport</li><li>Structure &amp; clarity</li><li>Emotional intelligence</li></ul>
+      </div>
+      <div class="pillar" style="--pc:#C98A1B">
+        <span class="w">Weight 15%</span><h3>System Use &amp; Documentation</h3>
+        <p>Tools, records, ticket hygiene.</p>
+        <ul><li>System navigation (LDZ + Zendesk)</li><li>Ticket hygiene</li></ul>
+      </div>
+      <div class="pillar" style="--pc:#B23A25">
+        <span class="w">Weight 10%</span><h3>Professional Conduct</h3>
+        <p>Process adherence, neutrality, standards.</p>
+        <ul><li>Professional conduct &amp; alignment</li></ul>
+      </div>
+    </div>
+
+    <div class="fail-band reveal r4">
+      <span class="mono-label">The safety floor — automatic 0, flagged &amp; escalated</span>
+      <div class="fails">
+        <div class="fail">Medical advice given (dosage, injection timing, clinical recommendations)</div>
+        <div class="fail">Adverse event, product quality complaint, or OSI missed or mishandled</div>
+        <div class="fail">Incorrect storage guidance (freezing, ignoring time/temperature rules)</div>
+        <div class="fail">Refill or early-fill rules misapplied</div>
+        <div class="fail">Safety event not documented, or documented in the wrong place</div>
+        <div class="fail">Wrong routing that could delay safety / compliance handling</div>
+        <div class="fail">Rude, dismissive, or misleading communication about safe use</div>
+        <div class="fail">Procedure bypass on a safety-critical flow</div>
+      </div>
+      <p style="margin-top:14px;font-size:13px;color:#5A2A1E;line-height:1.5;max-width:70ch">These never earn partial credit. Every one of the 1,421 reviewed tickets is a documented checkpoint that safety events were caught, logged, and routed correctly — your compliance posture, operationalized.</p>
+    </div>
+
+    <div class="proc" style="margin-top:16px">
+      <div class="proc-card reveal r5">
+        <h3>Sampling cadence</h3>
+        <div class="cadence">
+          <div class="cad"><span>New agents</span><b>10–15 tickets / week</b></div>
+          <div class="cad"><span>Established agents</span><b>5–7 tickets / week</b></div>
+          <div class="cad"><span>DSAT tickets</span><b>100% reviewed</b></div>
+          <div class="cad"><span>Major / critical incidents</span><b>10 tickets per incident</b></div>
+          <div class="cad"><span>High-risk workflows</span><b>Sampled every week</b></div>
+        </div>
+        <p style="font-size:12.5px;color:var(--slate);margin-top:12px;line-height:1.55">A blend of random, targeted, thematic, and risk-driven selection — fairness for agents, priority coverage where patient safety lives.</p>
+      </div>
+      <div class="proc-card reveal r5">
+        <h3>Every review covers</h3>
+        <ul class="checks">
+          <li>Full transcript — public and internal messages</li>
+          <li>System usage: LDZ lookups, Zendesk documentation accuracy</li>
+          <li>Macro selection and customization</li>
+          <li>Safety &amp; compliance handling (AE / PQC / OSI)</li>
+          <li>Tone, clarity, and message structure</li>
+          <li>Tagging and internal ticket hygiene</li>
+        </ul>
+      </div>
+    </div>
+    <p class="thesis reveal r6">Evaluators score in context — the patient's situation, emotional state, and stage in the journey.</p>
+    <div class="scroll-hint reveal r6">↕ This slide scrolls</div>
+  </section>
+
+  <!-- 3 · FULL DASHBOARD -->
+  <section class="slide tall" data-name="Dashboard">
+    <div class="eyebrow reveal r1">02 · June 2026 performance</div>
+    <h2 class="reveal r2">The dashboard — the whole thing.</h2>
+    <p class="lede reveal r2">Everything the system described on the cover produced in June — in one live view. Scroll within this slide; search any agent by name.</p>
+    <div class="dash-frame reveal r3">
+      <div class="dash-titlebar">
+        <span class="crumbs">Hugo Intelligence Hub · GiftHealth · Lilly Chat · June 2026 vs May 2026</span>
+        <span class="live">Live · hub.hugoinc.com</span>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><div class="k">Composite</div><div class="n good">94.9%</div><div class="d up">▲ 0.5 vs May · On track</div></div>
+        <div class="kpi"><div class="k">Evaluations</div><div class="n">1,421</div><div class="d up">▲ 104 vs May</div><div class="d dim">8 reviewers</div></div>
+        <div class="kpi"><div class="k">Agents</div><div class="n">178</div><div class="d">3 below 80%</div><div class="d dim">▼ 9 vs May</div></div>
+        <div class="kpi"><div class="k">Below 90%</div><div class="n">19</div><div class="d up">▼ 5 vs May (24)</div><div class="d dim">16 solid · 3 watch</div></div>
+        <div class="kpi"><div class="k">Coaching</div><div class="n good">95%</div><div class="d up">18 of 19 below-90% agents</div><div class="d dim">Coached this cycle</div></div>
+      </div>
+
+      <div class="dsect">Pillar deep dive</div>
+      <div class="dsect-sub">Each pillar with weight, score, delta vs prior period, and sub-item averages.</div>
+      <div class="dd-grid">
+        <div class="dd" style="--pc:#166B4A">
+          <div class="dd-head"><h3>Accuracy &amp; Compliance</h3><span class="sc">97.2%</span></div>
+          <div class="dd-meta"><span class="wt">35%</span><span class="dv">Δ 0.1 vs May</span><span class="status">On track</span></div>
+          <div class="sub"><span>Policy &amp; Rule Application</span><span class="fillbar"><i style="width:97.1%"></i></span><span class="v">97.1</span></div>
+          <div class="sub"><span>Compliance &amp; Safety</span><span class="fillbar"><i style="width:99.2%"></i></span><span class="v">99.2</span></div>
+          <div class="sub"><span>Workflow Execution</span><span class="fillbar"><i style="width:95.3%"></i></span><span class="v">95.3</span></div>
+        </div>
+        <div class="dd" style="--pc:#6D5BC7">
+          <div class="dd-head"><h3>Detection &amp; Risk Prevention</h3><span class="sc">97.5%</span></div>
+          <div class="dd-meta"><span class="wt">20%</span><span class="dv">Δ 0.2 vs May</span><span class="status">On track</span></div>
+          <div class="sub"><span>Risk Identification</span><span class="fillbar"><i style="width:99.7%"></i></span><span class="v">99.7</span></div>
+          <div class="sub"><span>Proactive Prevention</span><span class="fillbar"><i style="width:95.4%"></i></span><span class="v">95.4</span></div>
+        </div>
+        <div class="dd" style="--pc:#2E7DB2">
+          <div class="dd-head"><h3>Communication &amp; CX</h3><span class="sc">91.0%</span></div>
+          <div class="dd-meta"><span class="wt">20%</span><span class="dv">Δ 1.1 vs May</span><span class="status">On track</span></div>
+          <div class="sub watch"><span>Greeting, Personalization &amp; Rapport</span><span class="fillbar"><i style="width:86.3%"></i></span><span class="v">86.3</span></div>
+          <div class="sub"><span>Structure &amp; Clarity</span><span class="fillbar"><i style="width:97.2%"></i></span><span class="v">97.2</span></div>
+          <div class="sub"><span>Emotional Intelligence</span><span class="fillbar"><i style="width:94.1%"></i></span><span class="v">94.1</span></div>
+        </div>
+        <div class="dd" style="--pc:#C98A1B">
+          <div class="dd-head"><h3>System Use &amp; Documentation</h3><span class="sc">94.7%</span></div>
+          <div class="dd-meta"><span class="wt">15%</span><span class="dv">Δ 1.0 vs May</span><span class="status">On track</span></div>
+          <div class="sub"><span>System Navigation (LDZ + Zendesk)</span><span class="fillbar"><i style="width:98.9%"></i></span><span class="v">98.9</span></div>
+          <div class="sub watch"><span>Ticket Hygiene</span><span class="fillbar"><i style="width:86.4%"></i></span><span class="v">86.4</span></div>
+        </div>
+        <div class="dd" style="--pc:#B23A25">
+          <div class="dd-head"><h3>Professional Conduct &amp; Alignment</h3><span class="sc">95.8%</span></div>
+          <div class="dd-meta"><span class="wt">10%</span><span class="dv">Δ 0.5 vs May</span><span class="status">On track</span></div>
+          <div class="sub"><span>Professional Conduct &amp; Alignment</span><span class="fillbar"><i style="width:95.8%"></i></span><span class="v">95.8</span></div>
+        </div>
+      </div>
+
+      <div class="dsect">Agent distribution</div>
+      <div class="dsect-sub">Composite score bands across all 178 evaluated agents.</div>
+      <div class="dist" aria-hidden="true">
+        <div style="flex:159;background:#22A06B">159 on track</div>
+        <div style="flex:16;background:#C98A1B">16</div>
+        <div style="flex:3;background:#B23A25">3</div>
+      </div>
+      <div class="dist-caps">
+        <span><i style="background:#22A06B"></i><b>On track</b> · 90%+ (159, top at 100%)</span>
+        <span><i style="background:#C98A1B"></i><b>Solid</b> · 80–90% (16)</span>
+        <span><i style="background:#B23A25"></i><b>Watch</b> · below 80% (3, all above 75%)</span>
+      </div>
+
+      <div class="dsect">Agent roster</div>
+      <div class="dsect-sub">178 agents evaluated in June. Watch-flagged agents move into targeted remediation with elevated review density.</div>
+      <div class="roster-tools">
+        <input type="search" id="q" placeholder="Search agent…" aria-label="Search agents">
+        <button class="fbtn on" data-f="all">All · 178</button>
+        <button class="fbtn" data-f="ontrack">On track · 159</button>
+        <button class="fbtn" data-f="solid">Solid · 16</button>
+        <button class="fbtn" data-f="watch">Watch · 3</button>
+      </div>
+      <div class="rtable">
+        <div class="rscroll">
+          <table>
+            <thead><tr><th>#</th><th>Agent</th><th>Evals</th><th>Composite</th><th>Status</th></tr></thead>
+            <tbody id="tb"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="rcount" id="rcount"></div>
+
+      <div class="dsect">Signals &amp; context</div>
+      <div class="dsect-sub">Where quality gaps concentrated and what shaped outcomes for the period.</div>
+      <div class="sig-cards">
+        <div class="sigc">
+          <span class="k">Top improvement theme</span>
+          <div class="num">85+</div>
+          <h3>LDZ contact-method notes</h3>
+          <p>Most-repeated reviewer note in June: LDZ notes must always include the contact method — call, chat, email, or fax. Now a targeted coaching theme for July.</p>
+        </div>
+        <div class="sigc">
+          <span class="k">Lowest sub-criterion</span>
+          <div class="num">86.3</div>
+          <h3>Greeting, personalization &amp; rapport</h3>
+          <p>Agents open correctly but under-personalize. Refreshed greeting guidance and macro-customization coaching queued — measurable within one cycle.</p>
+        </div>
+        <div class="sigc">
+          <span class="k">Coverage</span>
+          <div class="cov">
+            <div><span>Reviewers</span><b>8</b></div>
+            <div><span>Evaluations</span><b>1,421</b></div>
+            <div><span>Agents covered</span><b>178</b></div>
+            <div><span>Coaching completed</span><b>95% of below-90% agents</b></div>
+            <div><span>CSAT / severity data</span><b>None this period</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-hint reveal r4">↕ This slide scrolls — the rest of the deck is one keystroke away.</div>
+  </section>
+
+  <!-- 4 · IMPACT & ASK -->
+  <section class="slide tall" data-name="Impact & ask">
+    <div class="eyebrow reveal r1">03 · From scores to fixes</div>
+    <h2 class="reveal r2">The reviews tell a story —<br>and the story drives training.</h2>
+    <p class="lede reveal r3">June's trend collation surfaced two concrete, coachable gaps, already routed to the training team:</p>
+    <div class="sig-grid">
+      <div class="sig reveal r3">
+        <span class="k">Signal 01 · Communication &amp; CX</span>
+        <div class="num">86.3</div>
+        <h3>Greeting, personalization &amp; rapport</h3>
+        <p>The lowest-scoring sub-criterion program-wide. Agents open correctly but under-personalize. Fix: refreshed greeting guidance and macro customization coaching — measurable within one review cycle.</p>
+      </div>
+      <div class="sig reveal r4">
+        <span class="k">Signal 02 · Documentation</span>
+        <div class="num">86.4</div>
+        <h3>Ticket hygiene — LDZ contact-method notes</h3>
+        <p>Reviews repeatedly flagged LDZ notes missing the contact method (call, chat, email, fax) — surfaced 85+ times in June improvement notes. A specific, trainable habit, now a targeted retraining theme.</p>
+      </div>
+      <div class="sig reveal r5">
+        <span class="k">The loop closes</span>
+        <div class="num" style="color:var(--green)">▲ 0.5</div>
+        <h3>Signals become gains</h3>
+        <p>Last cycle's insights became this cycle's results: composite up 0.5 points month over month, watchlist cleared to zero, and May's flagged agent back above the bar. New hires get 2× review density until they clear it.</p>
+      </div>
+    </div>
+    <p class="thesis reveal r6">This is standing work, done every week — issues reach you as coaching notes and WBR line items, never as surprises.</p>
+  
+    <div class="eyebrow reveal r6" style="margin-top:34px">04 · Where this goes next</div>
+    <h2 class="reveal r6" style="font-size:clamp(22px,2.6vw,34px)">Chat is covered. Voice is next.</h2>
+    <div class="close-card reveal r3">
+      <h2 style="font-size:clamp(21px,2.4vw,30px)">The system works. Now the program is about to outgrow the team running it.</h2>
+      <p class="lede">Everything in this deck — the 94.9% composite, the 90%+ CSAT, the weekly trend-to-training loop — is delivered by 8 QA reviewers doing full-depth manual reviews. With Lilly Voice launching and total agent count heading past 500, the same standard needs more hands to hold it.</p>
+
+      <div class="ask-math">
+        <div class="m"><b>8 QAs</b><span>today — covering 178 chat agents at full depth</span></div>
+        <div class="m"><b>500+</b><span>total agents as Lilly Voice comes online</span></div>
+        <div class="m"><b>1:20</b><span>the ratio that makes this depth possible</span></div>
+        <div class="m"><b>~25 QAs</b><span>what holding that ratio at 500+ agents requires</span></div>
+      </div>
+
+      <p class="roadmap-note"><b>Inside your roadmap, not beside it.</b> We know GiftHealth has its own QA roadmap, and nothing here is a proposal to build outside of it. What we're showing is the system that's already working — and where we can plug it into your plans. Whatever direction that roadmap takes, one thing holds today: as long as reviews stay manual at this depth, coverage scales with people.</p>
+
+      <div class="next">
+        <div class="next-item"><div class="k">Extend</div><p>Bring the proven framework — pillars, sampling discipline, 100% DSAT review, safety floor — to Lilly Voice the same way it works with Chat.</p></div>
+        <div class="next-item"><div class="k">Scale</div><p>Pending the rollout of GiftHealth Auto QA, grow the QA team from 8 toward ~25 in step with agent headcount — holding the 1:20 ratio so depth never dilutes as volume triples.</p></div>
+        <div class="next-item"><div class="k">Align</div><p>Co-plan with your QA team so our layer supports and accelerates your plans rather than duplicating them:</p>
+          <ul>
+            <li>Hugo QA holds manual QA while GiftHealth rolls out automation, with weekly calibration</li>
+            <li>Hugo QA feeds your roadmap insights on what's working in the current framework</li>
+            <li>If useful, extend Hugo QA coverage to other vendors</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-hint">↕ This slide scrolls</div>
+  </section>
+
+  <!-- rail -->
+  <nav class="rail" aria-label="Deck navigation">
+    <div class="rail-steps" id="steps"></div>
+    <div style="display:flex;align-items:center">
+      <span class="counter" id="counter">1 / 4</span>
+      <div class="arrows">
+        <button class="arrow" id="prev" aria-label="Previous slide">←</button>
+        <button class="arrow" id="next" aria-label="Next slide">→</button>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<script>
+  /* ---------- deck nav ---------- */
+  const slides=[...document.querySelectorAll('.slide')];
+  const stepsEl=document.getElementById('steps');
+  const counter=document.getElementById('counter');
+  let i=0;
+
+  slides.forEach((s,idx)=>{
+    const b=document.createElement('button');
+    b.className='step'+(idx===0?' on':'');
+    b.textContent=s.dataset.name;
+    b.addEventListener('click',()=>go(idx));
+    stepsEl.appendChild(b);
+  });
+  const stepBtns=[...stepsEl.children];
+
+  function go(n){
+    if(n<0||n>=slides.length||n===i)return;
+    slides[i].classList.remove('active');
+    slides[i].classList.toggle('prev',n>i);
+    slides[n].classList.remove('prev');
+    void slides[n].offsetWidth;
+    slides[n].classList.add('active');
+    slides[n].scrollTop=0;
+    stepBtns[i].classList.remove('on');
+    stepBtns[n].classList.add('on');
+    i=n;
+    counter.textContent=(i+1)+' / '+slides.length;
+  }
+  document.getElementById('next').addEventListener('click',()=>go(i+1));
+  document.getElementById('prev').addEventListener('click',()=>go(i-1));
+  document.addEventListener('keydown',e=>{
+    const t=e.target.tagName;
+    if(t==='INPUT'||t==='TEXTAREA')return; /* don't hijack typing in search */
+    if(e.key==='ArrowRight'||e.key==='PageDown')go(i+1);
+    if(e.key==='ArrowLeft'||e.key==='PageUp')go(i-1);
+    if(e.key==='Home')go(0);
+    if(e.key==='End')go(slides.length-1);
+  });
+  let x0=null;
+  document.addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true});
+  document.addEventListener('touchend',e=>{
+    if(x0===null)return;
+    const dx=e.changedTouches[0].clientX-x0;
+    if(Math.abs(dx)>60)go(i+(dx<0?1:-1));
+    x0=null;
+  },{passive:true});
+
+  /* ---------- roster ---------- */
+  const AGENTS=[
+  [1,"Olayinka Olaniran",7,100.0],[2,"Feranmi Olayiwola",4,100.0],[3,"Emmanuel Solaja",7,99.3],[4,"Ibrahim Adeyemo",7,99.3],[5,"Harper Vale",10,99.3],
+  [6,"Joy Amosu",6,99.2],[7,"Nelo Igbene",9,99.2],[8,"Tosin Balogun",9,99.2],[9,"Joan Isibor",8,99.1],[10,"Caroline Kanu",8,98.9],
+  [11,"Adeola Oluokun",9,98.9],[12,"Caleb Macaulay",9,98.9],[13,"Mary Oni",10,98.8],[14,"Olawale Busari",10,98.8],[15,"Adedoyin Adeleye",4,98.8],
+  [16,"Anyaogu Ndukwe",9,98.6],[17,"Onyinyechi Ariahu",9,98.6],[18,"Esther Kesinro",9,98.6],[19,"Lia Marcus",5,98.5],[20,"Sekinat Aliu",9,98.5],
+  [21,"Tani Thompson",9,98.5],[22,"Ajewole Boluwatife",10,98.3],[23,"Funto Wallace",7,98.2],[24,"Deborah Adeleye",6,98.1],[25,"Uchenna Nwadim",8,98.1],
+  [26,"Olawunmi Ayodele",8,98.1],[27,"Winnifred Odeh",9,98.1],[28,"Jaylene Daniels",9,98.1],[29,"Omoyeni Obisanya",9,98.1],[30,"Moyinoluwa Inubile",9,97.9],
+  [31,"Faith Owoseni",8,97.8],[32,"Marion Lane",4,97.8],[33,"Oluwatosin Peter Ayokanmi",9,97.8],[34,"Maka Unathi",9,97.8],[35,"Veranda White",10,97.8],
+  [36,"Naomi Omale",10,97.8],[37,"Emmanuel Kabongo",9,97.6],[38,"Faizat Hazeez",9,97.6],[39,"Paul Omotosho",9,97.6],[40,"Emmanuel Edwin Agaba",11,97.6],
+  [41,"Khadijah Akerele",10,97.5],[42,"Moses Chima",10,97.5],[43,"Feyintoluwa Oladimeji",7,97.5],[44,"Victory Oruaowei",8,97.5],[45,"Taiwo Odusanya",8,97.5],
+  [46,"Damilola Oluwadare",6,97.5],[47,"Emilio Cruz",8,97.5],[48,"Samiat Azeez",9,97.4],[49,"Mercer Chandler",9,97.4],[50,"Feyishayo Olajide",8,97.3],
+  [51,"Michael Oloyede",8,97.3],[52,"Cameron Holt",6,97.3],[53,"Mfon Umoh",10,97.3],[54,"Pelumi Ogunsami",10,97.3],[55,"Asanda Ncetani",5,97.3],
+  [56,"John Dada",9,97.2],[57,"Toriola Holliday",9,97.2],[58,"Lara Crane",9,97.2],[59,"Precious Opatola",10,97.1],[60,"Peculiar Archibong",9,97.1],
+  [61,"Micah Rhodes",6,97.1],[62,"Iyanu Oyedun",11,97.0],[63,"Tito Bathabile",5,97.0],[64,"Ibitoye Oluwasegun David",5,97.0],[65,"Arden Lake",7,97.0],
+  [66,"Susan Morakinyo",9,96.9],[67,"Comfort Omotosho",9,96.9],[68,"Segun Olajide",9,96.9],[69,"Alex Monroe",10,96.9],[70,"Gift Akpaka",10,96.9],
+  [71,"Mariam Abdulkareem",6,96.9],[72,"Adewale Taiwo",8,96.9],[73,"Kehinde Ibiyinka",8,96.9],[74,"Christiana Olawale",8,96.9],[75,"Adelugba Margaret Ayomidimeji",8,96.9],
+  [76,"Julius Agbaosi",9,96.8],[77,"Fasalojo Ayodeji",7,96.8],[78,"Renny Bedford",8,96.6],[79,"Blake Stevenson",9,96.5],[80,"Donnie Chandler",10,96.5],
+  [81,"Oakley Porter",11,96.5],[82,"Sunday Ajiboye",7,96.4],[83,"Abosede Ojelabi Olutundun",9,96.4],[84,"Rylan Foster",9,96.4],[85,"Johnson Bidemi Toluwani",6,96.3],
+  [86,"Oluwatomisin Allen",4,96.3],[87,"Tochi Opara",8,96.3],[88,"Ade Craig",9,96.3],[89,"Tore Cole",10,96.1],[90,"Victoria Madamidola",6,96.0],
+  [91,"Matthias Khekhe",10,96.0],[92,"Noma Nongqongqo",5,96.0],[93,"Arin Coker",9,95.8],[94,"Noel Carter",6,95.8],[95,"Meshack Whevoesa",10,95.8],
+  [96,"Toluwalope Fajuyigbe",7,95.7],[97,"Spencer Knox",9,95.7],[98,"Hawau Adams",6,95.6],[99,"Rowan Flynn",10,95.6],[100,"Asaniyi Taiwo Olusola",9,95.6],
+  [101,"Abosede Olowoshile",9,95.4],[102,"Motunrayo Ibikunle",9,95.4],[103,"Shiloh Vance",8,95.3],[104,"Adewole Joseph Damilare",9,95.3],[105,"Zoe Patterson",8,95.2],
+  [106,"Ahmed Olageshin",8,95.2],[107,"Chukwuma Anagor",10,95.1],[108,"Anie Bernard",8,95.0],[109,"Emihle Manga",1,95.0],[110,"Layo Orojo",7,95.0],
+  [111,"Olumide Oludaisi",7,95.0],[112,"Moyinoluwa Akinyemi",9,95.0],[113,"Owen Bradford",8,95.0],[114,"Paul Usianene",7,95.0],[115,"Michael Nwaeje",8,94.8],
+  [116,"Florence Amadin",6,94.8],[117,"Rachael Abdul",10,94.8],[118,"Kehinde Alonge",9,94.7],[119,"Tivere Evwiekpomare",9,94.7],[120,"Logan Pierce",8,94.7],
+  [121,"Olajuwon Okinbaloye",8,94.7],[122,"Rachel Mwamba",7,94.6],[123,"Ikechukwu Okoji",9,94.4],[124,"Khanya Bomvana",9,94.4],[125,"Sawyer Penn",10,94.4],
+  [126,"Aviwe Jayiya",9,94.3],[127,"Opara Rosemary",9,94.3],[128,"Milan Carter",7,94.3],[129,"Victories Egharevba",7,94.3],[130,"Cole Greene",5,94.3],
+  [131,"Omobolaji Alade",8,94.2],[132,"Destiny Moses",8,94.2],[133,"Lola Marcus",8,94.1],[134,"Adesegun Kukoyi",9,94.0],[135,"Teagan Brooks",5,94.0],
+  [136,"Campbell Vaughn",7,93.8],[137,"Kumi Sisonke",6,93.5],[138,"Olajide Adebanjo",9,93.5],[139,"Nathan Holloway",9,93.5],[140,"Zainab Nasiru",8,93.3],
+  [141,"Sandra Nworie",9,93.2],[142,"Favour Unuafe",7,92.7],[143,"Spencer Marks",5,92.5],[144,"August Monroe",4,92.5],[145,"Lekan Mustapha",9,92.2],
+  [146,"Harafa Minga-Jerome",7,92.1],[147,"Mubarak Sarumi",8,91.7],[148,"Elizabeth Adeniyi",9,91.5],[149,"Yarden Sinclair",9,91.5],[150,"Tosin Adeyemi",9,91.4],
+  [151,"Malah Yimi",5,91.3],[152,"Blake Donovan",4,91.3],[153,"Dylan Knox",9,91.1],[154,"Marlo Benton",9,91.1],[155,"Ongeziwe Qwayede",5,91.0],
+  [156,"Adigun Temiloluwa Toyeeb",6,90.6],[157,"Drew Bennett",6,90.6],[158,"Abiodun Francis",7,90.4],[159,"Zikhona Saleni",9,90.0],
+  [160,"Adeyinka Idowu",7,89.6],[161,"Victory Ige",10,89.5],[162,"Bridgette Mbadu",5,89.5],[163,"Hailey Johnson",9,89.2],[164,"Chase Fedyk",9,88.3],
+  [165,"Olakunle Bukola",7,87.9],[166,"Elijah Oyelakin",8,87.0],[167,"Ajoke Lawal",8,86.9],[168,"Leon Carter",9,86.4],[169,"Owolabi Abdulquadri Olabisi",10,85.6],
+  [170,"Temitope Peter",10,85.5],[171,"Keegan Hart",1,85.0],[172,"Colby Blake",8,83.4],[173,"Fiona Nandipha Mvalo",6,82.9],[174,"Esther Ayoade",9,82.1],
+  [175,"Victoria Boluwatife Makinde",8,81.7],[176,"Jade Kim Linde",7,78.0],[177,"River Hayes",8,77.8],[178,"Ifeoluwa Shobowale",11,75.6]
+  ];
+  function bandOf(c){return c>=90?"ontrack":c>=80?"solid":"watch"}
+  const LABEL={ontrack:["ON TRACK","ontrack"],solid:["SOLID","solid"],watch:["WATCH","watch"]};
+  const tb=document.getElementById('tb'),rcount=document.getElementById('rcount'),q=document.getElementById('q');
+  let filter="all";
+  function render(){
+    const term=q.value.trim().toLowerCase();
+    let rows="",n=0;
+    for(const [rk,nm,ev,cp] of AGENTS){
+      const band=bandOf(cp);
+      if(filter!=="all"&&band!==filter)continue;
+      if(term&&!nm.toLowerCase().includes(term))continue;
+      const [txt,cls]=LABEL[band];
+      rows+=`<tr><td class="rk">${rk}</td><td>${nm}</td><td class="ev">${ev}</td><td class="cp">${cp.toFixed(1)}%</td><td class="stc"><span class="st ${cls}">${txt}</span></td></tr>`;
+      n++;
+    }
+    tb.innerHTML=rows||`<tr><td colspan="5" style="text-align:center;color:var(--slate);padding:24px">No agents match.</td></tr>`;
+    rcount.textContent=`Showing ${n} of 178 agents`;
+  }
+  q.addEventListener('input',render);
+  document.querySelectorAll('.fbtn').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');
+      filter=b.dataset.f;
+      render();
+    });
+  });
+  render();
+</script>
+</body>
+</html>
