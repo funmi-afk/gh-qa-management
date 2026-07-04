@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hugo QA × GiftHealth · Lilly Chat — Quality Is the Product</title>
+<title>Hugo QA x GiftHealth · Lilly Chat · June 2026 MBR</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -12,7 +12,7 @@
     --surface:#F4F7F5; --card:#FFFFFF; --line:#DCE5E0;
     --green:#166B4A; --green-bright:#22A06B; --mint:#E4F3EB;
     --alert:#B23A25; --alert-bg:#FBEFEC; --amber:#C98A1B; --amber-bg:#FBF3E3;
-    --blue:#2E7DB2; --violet:#6D5BC7; --radius:14px;
+    --blue:#2E7DB2; --violet:#6D5BC7; --radius:0;
     --display:'Space Grotesk',system-ui,sans-serif;
     --mono:'IBM Plex Mono',ui-monospace,monospace;
     --body:'Inter',system-ui,sans-serif;
@@ -68,14 +68,14 @@
 
   /* ---------- story cover ---------- */
   .story-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px;margin-top:26px}
-  .sblock{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:19px 20px}
+  .sblock{background:var(--card);border:1px solid var(--line);border-radius:0;padding:19px 20px}
   .sblock .sk{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);font-weight:600;display:block;margin-bottom:8px}
   .sblock p{font-size:13px;line-height:1.6;color:var(--ink-soft)}
   .sblock p b{color:var(--ink)}
   .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-  .chip{font-family:var(--mono);font-size:10px;letter-spacing:.04em;border-radius:99px;padding:5px 11px;font-weight:600;color:#fff}
+  .chip{font-family:var(--mono);font-size:10px;letter-spacing:.04em;border-radius:0;padding:5px 11px;font-weight:600;color:#fff}
   .statband{
-    display:flex;flex-wrap:wrap;gap:0;margin-top:14px;background:var(--ink);border-radius:16px;overflow:hidden;
+    display:flex;flex-wrap:wrap;gap:0;margin-top:14px;background:var(--ink);border-radius:0;overflow:hidden;
   }
   .statband .stat{flex:1;min-width:150px;padding:18px 20px;border-right:1px solid rgba(255,255,255,.1)}
   .statband .stat:last-child{border-right:none}
@@ -95,14 +95,14 @@
   .step{
     font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
     border:none;background:transparent;color:var(--slate);cursor:pointer;
-    padding:7px 9px;border-radius:99px;transition:all .2s;font-weight:500;
+    padding:7px 9px;border-radius:0;transition:all .2s;font-weight:500;
   }
   .step:hover{color:var(--ink)}
   .step.on{background:var(--ink);color:#fff}
   .step:focus-visible{outline:2px solid var(--green);outline-offset:2px}
   .arrows{display:flex;gap:8px}
   .arrow{
-    width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);
+    width:38px;height:38px;border-radius:0;border:1.5px solid var(--line);
     background:var(--card);color:var(--ink);cursor:pointer;font-size:15px;
     display:grid;place-items:center;transition:all .2s;
   }
@@ -116,7 +116,7 @@
   .cover-brand em{font-style:normal;color:var(--green)}
   .score-chip{
     display:inline-flex;align-items:baseline;gap:12px;flex-wrap:wrap;
-    background:var(--ink);color:#fff;border-radius:99px;padding:12px 22px;margin-top:32px;
+    background:var(--ink);color:#fff;border-radius:0;padding:12px 22px;margin-top:32px;
   }
   .score-chip .big{font-family:var(--display);font-size:30px;font-weight:700;color:#7CE0AE}
   .score-chip .sub{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
@@ -125,28 +125,28 @@
   .cover-foot .fact b{display:block;font-family:var(--display);font-size:21px;font-weight:600}
   .cover-foot .fact span{font-size:12.5px;color:var(--slate)}
   .kbd-hint{font-family:var(--mono);font-size:11px;color:var(--slate);margin-top:36px}
-  .kbd-hint kbd{border:1px solid var(--line);background:var(--card);border-radius:5px;padding:2px 7px;font-family:inherit}
+  .kbd-hint kbd{border:1px solid var(--line);background:var(--card);border-radius:0;padding:2px 7px;font-family:inherit}
 
   /* ---------- stakes ---------- */
   .stake-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:26px}
-  .stake{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 20px 18px}
+  .stake{background:var(--card);border:1px solid var(--line);border-radius:0;padding:20px 20px 18px}
   .stake .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--alert);font-weight:600;margin-bottom:9px;display:block}
   .stake p{font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
 
   /* ---------- framework pillars ---------- */
   .pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:13px;margin-top:26px}
   .pillar{
-    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    background:var(--card);border:1px solid var(--line);border-radius:0;
     padding:18px;display:flex;flex-direction:column;gap:8px;border-top:4px solid var(--pc,var(--green));
   }
-  .pillar .w{font-family:var(--mono);font-size:11px;color:var(--slate);background:var(--surface);border-radius:99px;padding:3px 9px;align-self:flex-start}
+  .pillar .w{font-family:var(--mono);font-size:11px;color:var(--slate);background:var(--surface);border-radius:0;padding:3px 9px;align-self:flex-start}
   .pillar h3{font-family:var(--display);font-size:15.5px;font-weight:600;line-height:1.25}
   .pillar p{font-size:12.5px;line-height:1.5;color:var(--slate)}
   .pillar ul{list-style:none;margin-top:2px}
   .pillar li{font-size:12px;color:var(--ink-soft);padding:3px 0;border-top:1px dashed var(--line)}
 
   /* ---------- auto-fail ---------- */
-  .fail-band{background:var(--alert-bg);border:1.5px solid #ECC9C0;border-radius:var(--radius);padding:22px;margin-top:24px}
+  .fail-band{background:var(--alert-bg);border:1.5px solid #ECC9C0;border-radius:0;padding:22px;margin-top:24px}
   .fail-band .mono-label{color:var(--alert)}
   .fails{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:0 30px;margin-top:12px}
   .fail{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid #ECD5CE;font-size:13px;line-height:1.45;color:#5A2A1E}
@@ -157,7 +157,7 @@
   /* ---------- process ---------- */
   .proc{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:26px}
   @media(max-width:800px){.proc{grid-template-columns:1fr}}
-  .proc-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+  .proc-card{background:var(--card);border:1px solid var(--line);border-radius:0;padding:22px}
   .proc-card h3{font-family:var(--display);font-size:17px;font-weight:600;margin-bottom:12px}
   .cadence{display:flex;flex-direction:column;gap:8px}
   .cad{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:13.5px}
@@ -168,13 +168,13 @@
 
   /* ---------- DASHBOARD SLIDE ---------- */
   .dash-frame{
-    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    background:var(--card);border:1px solid var(--line);border-radius:0;
     padding:18px;margin-top:18px;box-shadow:0 10px 30px rgba(14,31,26,.06);
   }
   .dash-titlebar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
   .dash-titlebar .crumbs{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#9AA8A1;font-weight:600}
   .live{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--green-bright);display:flex;align-items:center;gap:6px;font-weight:600}
-  .live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green-bright);animation:pulse 1.6s infinite}
+  .live::before{content:"";width:7px;height:7px;border-radius:0;background:var(--green-bright);animation:pulse 1.6s infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
   .scroll-hint{font-family:var(--mono);font-size:10.5px;color:var(--slate);margin-top:10px}
 
@@ -183,7 +183,7 @@
   .dsect-sub{font-size:12px;color:var(--slate);margin-bottom:10px}
 
   .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-  .kpi{background:#FDFEFD;border:1px solid var(--line);border-radius:11px;padding:13px 14px}
+  .kpi{background:#FDFEFD;border:1px solid var(--line);border-radius:0;padding:13px 14px}
   .kpi .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#9AA8A1;font-weight:600}
   .kpi .n{font-family:var(--display);font-size:26px;font-weight:700;margin-top:4px;letter-spacing:-.02em}
   .kpi .n.good{color:var(--green-bright)}
@@ -192,42 +192,42 @@
   .kpi .d.dim{color:#9AA8A1}
 
   .dd-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px}
-  .dd{background:#FDFEFD;border:1px solid var(--line);border-radius:11px;padding:15px;border-top:4px solid var(--pc)}
+  .dd{background:#FDFEFD;border:1px solid var(--line);border-radius:0;padding:15px;border-top:4px solid var(--pc)}
   .dd-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
   .dd-head h3{font-family:var(--display);font-size:14px;font-weight:600;line-height:1.25;max-width:22ch}
   .dd-head .sc{font-family:var(--display);font-size:23px;font-weight:700;color:var(--green-bright)}
   .dd-meta{display:flex;gap:8px;align-items:center;margin:6px 0 10px}
-  .dd-meta .wt{font-family:var(--mono);font-size:10px;color:var(--slate);background:var(--surface);border-radius:99px;padding:3px 9px}
+  .dd-meta .wt{font-family:var(--mono);font-size:10px;color:var(--slate);background:var(--surface);border-radius:0;padding:3px 9px}
   .dd-meta .dv{font-family:var(--mono);font-size:10px;color:var(--slate)}
-  .dd-meta .status{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--green-bright);background:var(--mint);border-radius:99px;padding:3px 9px;font-weight:600}
+  .dd-meta .status{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--green-bright);background:var(--mint);border-radius:0;padding:3px 9px;font-weight:600}
   .sub{display:grid;grid-template-columns:1fr 84px 38px;align-items:center;gap:10px;padding:6px 0;border-top:1px dashed var(--line);font-size:12px;color:var(--ink-soft)}
-  .fillbar{height:5px;border-radius:99px;background:#EDF1EF;overflow:hidden}
-  .fillbar i{display:block;height:100%;border-radius:99px;background:var(--pc);transform:scaleX(0);transform-origin:left;transition:transform .9s cubic-bezier(.2,.7,.2,1) .25s}
+  .fillbar{height:5px;border-radius:0;background:#EDF1EF;overflow:hidden}
+  .fillbar i{display:block;height:100%;border-radius:0;background:var(--pc);transform:scaleX(0);transform-origin:left;transition:transform .9s cubic-bezier(.2,.7,.2,1) .25s}
   .slide.active .fillbar i{transform:scaleX(1)}
   .sub .v{font-family:var(--mono);font-size:11px;color:var(--slate);text-align:right}
   .sub.watch .v{color:var(--amber);font-weight:600}
   .sub.watch .fillbar i{background:var(--amber)}
 
-  .dist{display:flex;height:28px;border-radius:8px;overflow:hidden}
+  .dist{display:flex;height:28px;border-radius:0;overflow:hidden}
   .dist div{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10.5px;color:#fff;font-weight:600;min-width:24px}
   .dist-caps{display:flex;gap:18px;margin-top:8px;flex-wrap:wrap;font-size:11.5px;color:var(--slate)}
-  .dist-caps i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px}
+  .dist-caps i{display:inline-block;width:9px;height:9px;border-radius:0;margin-right:6px}
 
   .roster-tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
   .roster-tools input{
-    flex:1;min-width:170px;border:1px solid var(--line);border-radius:9px;background:#FDFEFD;
+    flex:1;min-width:170px;border:1px solid var(--line);border-radius:0;background:#FDFEFD;
     font-family:var(--body);font-size:12.5px;padding:8px 12px;color:var(--ink);
   }
   .roster-tools input:focus{outline:2px solid var(--green);outline-offset:1px}
   .fbtn{
     font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;font-weight:600;
-    border:1px solid var(--line);background:#FDFEFD;color:var(--slate);border-radius:99px;
+    border:1px solid var(--line);background:#FDFEFD;color:var(--slate);border-radius:0;
     padding:7px 12px;cursor:pointer;transition:all .15s;
   }
   .fbtn:hover{border-color:var(--ink);color:var(--ink)}
   .fbtn.on{background:var(--ink);border-color:var(--ink);color:#fff}
   .fbtn:focus-visible{outline:2px solid var(--green);outline-offset:2px}
-  .rtable{background:#FDFEFD;border:1px solid var(--line);border-radius:11px;overflow:hidden}
+  .rtable{background:#FDFEFD;border:1px solid var(--line);border-radius:0;overflow:hidden}
   .rscroll{max-height:330px;overflow-y:auto}
   table{width:100%;border-collapse:collapse}
   thead th{
@@ -244,7 +244,7 @@
   td.rk{font-family:var(--mono);font-size:10.5px;color:#9AA8A1}
   td.ev,td.cp{text-align:right;font-family:var(--mono);font-size:11.5px}
   td.cp{font-weight:600}
-  .st{font-family:var(--mono);font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;border-radius:99px;padding:3px 9px;font-weight:600;display:inline-block}
+  .st{font-family:var(--mono);font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;border-radius:0;padding:3px 9px;font-weight:600;display:inline-block}
   .st.ontrack{background:var(--mint);color:var(--green)}
   .st.solid{background:var(--amber-bg);color:var(--amber)}
   .st.watch{background:var(--alert-bg);color:var(--alert)}
@@ -252,7 +252,7 @@
   .rcount{font-family:var(--mono);font-size:10.5px;color:var(--slate);margin-top:7px}
 
   .sig-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
-  .sigc{background:#FDFEFD;border:1px solid var(--line);border-radius:11px;padding:15px}
+  .sigc{background:#FDFEFD;border:1px solid var(--line);border-radius:0;padding:15px}
   .sigc .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:600;display:block;margin-bottom:7px}
   .sigc h3{font-family:var(--display);font-size:14px;font-weight:600;margin-bottom:5px}
   .sigc p{font-size:12px;color:var(--slate);line-height:1.5}
@@ -263,7 +263,7 @@
 
   /* ---------- signals narrative ---------- */
   .sig-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:24px}
-  .sig{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+  .sig{background:var(--card);border:1px solid var(--line);border-radius:0;padding:20px}
   .sig .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:600;margin-bottom:9px;display:block}
   .sig h3{font-family:var(--display);font-size:16px;font-weight:600;margin-bottom:7px}
   .sig p{font-size:13px;line-height:1.55;color:var(--slate)}
@@ -271,23 +271,23 @@
 
   /* ---------- value ---------- */
   .value-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:26px}
-  .val{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
-  .val .ic{width:34px;height:34px;border-radius:9px;background:var(--mint);display:grid;place-items:center;font-size:16px;margin-bottom:12px}
+  .val{background:var(--card);border:1px solid var(--line);border-radius:0;padding:22px}
+  .val .ic{width:34px;height:34px;border-radius:0;background:var(--mint);display:grid;place-items:center;font-size:16px;margin-bottom:12px}
   .val h3{font-family:var(--display);font-size:16.5px;font-weight:600;margin-bottom:7px}
   .val p{font-size:13px;line-height:1.55;color:var(--slate)}
 
   /* ---------- close ---------- */
-  .close-card{background:var(--ink);color:#fff;border-radius:20px;padding:clamp(26px,4vw,50px);margin-top:24px}
+  .close-card{background:var(--ink);color:#fff;border-radius:0;padding:clamp(26px,4vw,50px);margin-top:24px}
   .close-card h2{color:#fff;margin-bottom:10px}
   .close-card .lede{color:#B9C7C0}
   .next{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:28px}
-  .next-item{border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:18px}
+  .next-item{border:1px solid rgba(255,255,255,.16);border-radius:0;padding:18px}
   .next-item .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#7CE0AE;font-weight:600;margin-bottom:8px}
   .next-item p{font-size:13.5px;line-height:1.5;color:#DCE5E0}
   .next-item ul{list-style:none;margin-top:8px}
   .next-item li{font-size:12.5px;line-height:1.5;color:#DCE5E0;padding:5px 0 5px 16px;position:relative;border-top:1px dashed rgba(255,255,255,.14)}
   .next-item li::before{content:"→";position:absolute;left:0;color:#7CE0AE;font-size:11px}
-  .ask-math{display:flex;align-items:stretch;gap:0;margin:24px 0 4px;border:1px solid rgba(255,255,255,.16);border-radius:12px;overflow:hidden;flex-wrap:wrap}
+  .ask-math{display:flex;align-items:stretch;gap:0;margin:24px 0 4px;border:1px solid rgba(255,255,255,.16);border-radius:0;overflow:hidden;flex-wrap:wrap}
   .ask-math .m{flex:1;min-width:150px;padding:16px 18px;border-right:1px solid rgba(255,255,255,.12);position:relative}
   .ask-math .m:last-child{border-right:none}
   .ask-math .m b{display:block;font-family:var(--display);font-size:26px;font-weight:700;color:#7CE0AE;letter-spacing:-.02em}
@@ -309,7 +309,7 @@
       <div class="mono-label">Quality Assurance Program · June 2026 MBR</div>
     </div>
     <h1 class="reveal r2" style="margin-top:26px;font-size:clamp(32px,4.6vw,58px)">The QA layer behind<br>Lilly Chat.</h1>
-    <p class="lede reveal r2" style="margin-top:14px">We launched the Lilly workflow in December 2025 as a chat-only operation — and layered on a dedicated QA team from the start, to ensure every patient conversation met the same clinical, compliance, and experience standard from the very first ticket.</p>
+    <p class="lede reveal r2" style="margin-top:14px">We launched the Lilly workflow in December 2025 as a chat-only operation and layered on a dedicated QA team from the start, to ensure every patient conversation met the same clinical, compliance, and experience standard from the very first ticket.</p>
 
     <div class="story-grid">
       <div class="sblock reveal r3">
@@ -325,19 +325,19 @@
       </div>
       <div class="sblock reveal r3">
         <span class="sk">How we sample</span>
-        <p><b>5–15 tickets per agent per week</b> depending on tenure, plus <b>100% review of every DSAT</b>. A blend of random, targeted, thematic, and risk-driven selection — fairness for agents, priority coverage where patient safety lives. It lets us zero in on <b>what really matters, where it matters</b>.</p>
+        <p><b>5–15 tickets per agent per week</b> depending on tenure, plus <b>100% review of every DSAT</b>. A blend of random, targeted, thematic, and risk-driven selection: fairness for agents, priority coverage where patient safety lives. It lets us zero in on <b>what really matters, where it matters</b>.</p>
       </div>
       <div class="sblock reveal r4">
         <span class="sk">What it enables</span>
-        <p>Our QA layer is one of the primary reasons <b>CSAT has held above 90% consistently</b> — and it gives new hires the review density they need to ramp fast. The volume of sampling lets us maintain a <b>maximum 1:20 QA-to-agent ratio</b>.</p>
+        <p>Our QA layer is one of the primary reasons <b>CSAT has held above 90% consistently</b>, and it gives new hires the review density they need to ramp fast. The volume of sampling lets us maintain a <b>maximum 1:20 QA-to-agent ratio</b>.</p>
       </div>
       <div class="sblock reveal r4">
         <span class="sk">Why a dedicated team</span>
-        <p>This depth can't ride along with team leadership. TLs already carry <b>attendance, adherence, real-time feedback and coaching, escalations, and admin</b> — 1,400+ full-depth reviews a month requires its own function, or it simply doesn't happen at this rigor.</p>
+        <p>This depth can't ride along with team leadership. TLs already carry <b>attendance, adherence, real-time feedback and coaching, escalations, and admin</b>. 1,400+ full-depth reviews a month requires its own function to happen at this rigor.</p>
       </div>
       <div class="sblock reveal r5" style="grid-column:1/-1">
-        <span class="sk">Not isolated checkmarks — a story</span>
-        <p>Every week, the QA team collates trends and insights across all reviews and feeds them to the training team. General knowledge gaps become <b>targeted retraining before they become patterns</b> — the reviews don't just score the past, they steer the next month.</p>
+        <span class="sk">Weekly trends and insights</span>
+        <p>Every week, the QA team collates trends and insights across all reviews and feeds them to the training team. General knowledge gaps become <b>targeted retraining before they become patterns</b>. The reviews don't just score the past, they steer the next month.</p>
       </div>
     </div>
 
@@ -352,9 +352,9 @@
 
   <!-- 2 · FRAMEWORK -->
   <section class="slide tall" data-name="Framework">
-    <div class="eyebrow reveal r1">01 · The standard we hold</div>
-    <h2 class="reveal r2">Every ticket, measured the same way.</h2>
-    <p class="lede reveal r2">A weighted rubric built for specialty-pharmacy support — five pillars, eleven scored sub-criteria, weights that follow risk. Accuracy and safety carry more than half the score.</p>
+    <div class="eyebrow reveal r1">01 · QA framework</div>
+    <h2 class="reveal r2">The QA framework.</h2>
+    <p class="lede reveal r2">A weighted rubric built for specialty-pharmacy support: five pillars, eleven scored sub-criteria, and weights that follow risk. Accuracy and safety carry more than half the score.</p>
 
     <div class="pillars reveal r3">
       <div class="pillar" style="--pc:#166B4A">
@@ -385,7 +385,7 @@
     </div>
 
     <div class="fail-band reveal r4">
-      <span class="mono-label">The safety floor — automatic 0, flagged &amp; escalated</span>
+      <span class="mono-label">The safety floor: automatic 0, flagged &amp; escalated</span>
       <div class="fails">
         <div class="fail">Medical advice given (dosage, injection timing, clinical recommendations)</div>
         <div class="fail">Adverse event, product quality complaint, or OSI missed or mishandled</div>
@@ -396,7 +396,7 @@
         <div class="fail">Rude, dismissive, or misleading communication about safe use</div>
         <div class="fail">Procedure bypass on a safety-critical flow</div>
       </div>
-      <p style="margin-top:14px;font-size:13px;color:#5A2A1E;line-height:1.5;max-width:70ch">These never earn partial credit. Every one of the 1,421 reviewed tickets is a documented checkpoint that safety events were caught, logged, and routed correctly — your compliance posture, operationalized.</p>
+      <p style="margin-top:14px;font-size:13px;color:#5A2A1E;line-height:1.5;max-width:70ch">These never earn partial credit. Every one of the 1,421 reviewed tickets is a documented checkpoint that safety events were caught, logged, and routed correctly. This is your compliance posture, operationalized.</p>
     </div>
 
     <div class="proc" style="margin-top:16px">
@@ -409,12 +409,12 @@
           <div class="cad"><span>Major / critical incidents</span><b>10 tickets per incident</b></div>
           <div class="cad"><span>High-risk workflows</span><b>Sampled every week</b></div>
         </div>
-        <p style="font-size:12.5px;color:var(--slate);margin-top:12px;line-height:1.55">A blend of random, targeted, thematic, and risk-driven selection — fairness for agents, priority coverage where patient safety lives.</p>
+        <p style="font-size:12.5px;color:var(--slate);margin-top:12px;line-height:1.55">A blend of random, targeted, thematic, and risk-driven selection: fairness for agents, priority coverage where patient safety lives.</p>
       </div>
       <div class="proc-card reveal r5">
         <h3>Every review covers</h3>
         <ul class="checks">
-          <li>Full transcript — public and internal messages</li>
+          <li>Full transcript, public and internal messages</li>
           <li>System usage: LDZ lookups, Zendesk documentation accuracy</li>
           <li>Macro selection and customization</li>
           <li>Safety &amp; compliance handling (AE / PQC / OSI)</li>
@@ -423,15 +423,15 @@
         </ul>
       </div>
     </div>
-    <p class="thesis reveal r6">Evaluators score in context — the patient's situation, emotional state, and stage in the journey.</p>
+    <p class="thesis reveal r6">Evaluators score in context: the patient's situation, emotional state, and stage in the journey.</p>
     <div class="scroll-hint reveal r6">↕ This slide scrolls</div>
   </section>
 
   <!-- 3 · FULL DASHBOARD -->
   <section class="slide tall" data-name="Dashboard">
     <div class="eyebrow reveal r1">02 · June 2026 performance</div>
-    <h2 class="reveal r2">The dashboard — the whole thing.</h2>
-    <p class="lede reveal r2">Everything the system described on the cover produced in June — in one live view. Scroll within this slide; search any agent by name.</p>
+    <h2 class="reveal r2">June 2026 performance.</h2>
+    <p class="lede reveal r2">Everything the system described on the cover produced in June, in one live view. Scroll within this slide; search any agent by name.</p>
     <div class="dash-frame reveal r3">
       <div class="dash-titlebar">
         <span class="crumbs">Hugo Intelligence Hub · GiftHealth · Lilly Chat · June 2026 vs May 2026</span>
@@ -521,13 +521,13 @@
           <span class="k">Top improvement theme</span>
           <div class="num">85+</div>
           <h3>LDZ contact-method notes</h3>
-          <p>Most-repeated reviewer note in June: LDZ notes must always include the contact method — call, chat, email, or fax. Now a targeted coaching theme for July.</p>
+          <p>Most-repeated reviewer note in June: LDZ notes must always include the contact method: call, chat, email, or fax. Now a targeted coaching theme for July.</p>
         </div>
         <div class="sigc">
           <span class="k">Lowest sub-criterion</span>
           <div class="num">86.3</div>
           <h3>Greeting, personalization &amp; rapport</h3>
-          <p>Agents open correctly but under-personalize. Refreshed greeting guidance and macro-customization coaching queued — measurable within one cycle.</p>
+          <p>Agents open correctly but under-personalize. Refreshed greeting guidance and macro-customization coaching queued, measurable within one cycle.</p>
         </div>
         <div class="sigc">
           <span class="k">Coverage</span>
@@ -540,27 +540,28 @@
           </div>
         </div>
       </div>
+
     </div>
-    <div class="scroll-hint reveal r4">↕ This slide scrolls — the rest of the deck is one keystroke away.</div>
+    <div class="scroll-hint reveal r4">↕ This slide scrolls. The rest of the deck is one keystroke away.</div>
   </section>
 
   <!-- 4 · IMPACT & ASK -->
   <section class="slide tall" data-name="Impact & ask">
     <div class="eyebrow reveal r1">03 · From scores to fixes</div>
-    <h2 class="reveal r2">The reviews tell a story —<br>and the story drives training.</h2>
+    <h2 class="reveal r2">What the reviews told us in June.</h2>
     <p class="lede reveal r3">June's trend collation surfaced two concrete, coachable gaps, already routed to the training team:</p>
     <div class="sig-grid">
       <div class="sig reveal r3">
         <span class="k">Signal 01 · Communication &amp; CX</span>
         <div class="num">86.3</div>
         <h3>Greeting, personalization &amp; rapport</h3>
-        <p>The lowest-scoring sub-criterion program-wide. Agents open correctly but under-personalize. Fix: refreshed greeting guidance and macro customization coaching — measurable within one review cycle.</p>
+        <p>The lowest-scoring sub-criterion program-wide. Agents open correctly but under-personalize. Fix: refreshed greeting guidance and macro customization coaching, measurable within one review cycle.</p>
       </div>
       <div class="sig reveal r4">
         <span class="k">Signal 02 · Documentation</span>
         <div class="num">86.4</div>
-        <h3>Ticket hygiene — LDZ contact-method notes</h3>
-        <p>Reviews repeatedly flagged LDZ notes missing the contact method (call, chat, email, fax) — surfaced 85+ times in June improvement notes. A specific, trainable habit, now a targeted retraining theme.</p>
+        <h3>Ticket hygiene: LDZ contact-method notes</h3>
+        <p>Reviews repeatedly flagged LDZ notes missing the contact method (call, chat, email, fax), surfaced 85+ times in June improvement notes. A specific, trainable habit, now a targeted retraining theme.</p>
       </div>
       <div class="sig reveal r5">
         <span class="k">The loop closes</span>
@@ -569,35 +570,47 @@
         <p>Last cycle's insights became this cycle's results: composite up 0.5 points month over month, watchlist cleared to zero, and May's flagged agent back above the bar. New hires get 2× review density until they clear it.</p>
       </div>
     </div>
-    <p class="thesis reveal r6">This is standing work, done every week — issues reach you as coaching notes and WBR line items, never as surprises.</p>
+    <p class="thesis reveal r6">This is standing work, done every week: issues reach you as coaching notes and WBR line items, not as surprises.</p>
   
-    <div class="eyebrow reveal r6" style="margin-top:34px">04 · Where this goes next</div>
-    <h2 class="reveal r6" style="font-size:clamp(22px,2.6vw,34px)">Chat is covered. Voice is next.</h2>
+    <div class="eyebrow reveal r6" style="margin-top:34px">04 · The ask</div>
+    <h2 class="reveal r6" style="font-size:clamp(22px,2.6vw,34px)">Extending coverage to Lilly Voice.</h2>
     <div class="close-card reveal r3">
-      <h2 style="font-size:clamp(21px,2.4vw,30px)">The system works. Now the program is about to outgrow the team running it.</h2>
-      <p class="lede">Everything in this deck — the 94.9% composite, the 90%+ CSAT, the weekly trend-to-training loop — is delivered by 8 QA reviewers doing full-depth manual reviews. With Lilly Voice launching and total agent count heading past 500, the same standard needs more hands to hold it.</p>
+      <h2 style="font-size:clamp(21px,2.4vw,30px)">The framework works. The next phase needs more coverage.</h2>
+      <p class="lede">Everything in this deck, from the 94.9% composite to the 90%+ CSAT to the weekly trend-to-training loop, is delivered by 8 QA reviewers doing full-depth manual reviews. With Lilly Voice launching and total agent count heading past 500, the same standard needs more hands to hold it.</p>
 
       <div class="ask-math">
-        <div class="m"><b>8 QAs</b><span>today — covering 178 chat agents at full depth</span></div>
+        <div class="m"><b>8 QAs</b><span>today, covering 178 chat agents at full depth</span></div>
         <div class="m"><b>500+</b><span>total agents as Lilly Voice comes online</span></div>
         <div class="m"><b>1:20</b><span>the ratio that makes this depth possible</span></div>
         <div class="m"><b>~25 QAs</b><span>what holding that ratio at 500+ agents requires</span></div>
       </div>
 
-      <p class="roadmap-note"><b>Inside your roadmap, not beside it.</b> We know GiftHealth has its own QA roadmap, and nothing here is a proposal to build outside of it. What we're showing is the system that's already working — and where we can plug it into your plans. Whatever direction that roadmap takes, one thing holds today: as long as reviews stay manual at this depth, coverage scales with people.</p>
+      <p class="roadmap-note"><b>Inside your roadmap, not beside it.</b> We know GiftHealth has its own QA roadmap, and nothing here is a proposal to build outside of it. What we're showing is the system that's already working, and where we can plug it into your plans. Whatever direction that roadmap takes, one thing holds today: as long as reviews stay manual at this depth, coverage scales with people.</p>
 
       <div class="next">
-        <div class="next-item"><div class="k">Extend</div><p>Bring the proven framework — pillars, sampling discipline, 100% DSAT review, safety floor — to Lilly Voice the same way it works with Chat.</p></div>
-        <div class="next-item"><div class="k">Scale</div><p>Pending the rollout of GiftHealth Auto QA, grow the QA team from 8 toward ~25 in step with agent headcount — holding the 1:20 ratio so depth never dilutes as volume triples.</p></div>
+        <div class="next-item"><div class="k">Extend</div><p>Bring the proven framework (pillars, sampling discipline, 100% DSAT review, safety floor) to Lilly Voice the same way it works with Chat.</p></div>
+        <div class="next-item"><div class="k">Scale</div><p>Pending the rollout of GiftHealth Auto QA, grow the QA team from 8 toward ~25 in step with agent headcount, holding the 1:20 ratio so depth never dilutes as volume triples.</p></div>
         <div class="next-item"><div class="k">Align</div><p>Co-plan with your QA team so our layer supports and accelerates your plans rather than duplicating them:</p>
           <ul>
-            <li>Hugo QA holds manual QA while GiftHealth rolls out automation, with weekly calibration</li>
-            <li>Hugo QA feeds your roadmap insights on what's working in the current framework</li>
-            <li>If useful, extend Hugo QA coverage to other vendors</li>
+            <li>Extend Hugo QA to your other teams and vendors so the standard is uniform across the program</li>
+            <li>Two-layer assurance: your internal QA team reviews our QA</li>
+            <li>Once automation is up and running, we run alongside it with a smaller team as manual backup and calibration</li>
+            <li>Hugo manages QA analytics across the program and feeds your roadmap insights on what's working</li>
           </ul>
         </div>
       </div>
     </div>
+    <div class="eyebrow reveal r6" style="margin-top:38px">05 · Closing thought</div>
+    <h2 class="reveal r6" style="font-size:clamp(22px,2.6vw,34px)">A partnership built on data intelligence.</h2>
+    <p class="lede reveal r6">Everything in this deck, from the QA scorecard to the coaching loop to the trends that steer training, exists because we build our client programs on data intelligence. QA is one of four intelligence views we have built for GiftHealth as the program grew:</p>
+    <div class="sig-grid" style="margin-top:18px">
+      <div class="sig"><span class="k" style="color:var(--slate)">View I</span><h3>Billing</h3><p>Detailed billing with per-agent performance.</p></div>
+      <div class="sig"><span class="k" style="color:var(--slate)">View II</span><h3>Scorecard</h3><p>Program scorecard view.</p></div>
+      <div class="sig"><span class="k" style="color:var(--slate)">View III</span><h3>Performance Management Hub</h3><p>Agent, TL, and site performance management.</p></div>
+      <div class="sig" style="border-color:var(--green)"><span class="k" style="color:var(--green)">View IV</span><h3>QA Dashboard</h3><p>The quality layer covered in this proposal.</p></div>
+    </div>
+    <p class="thesis reveal r6" style="margin-top:22px">We want to consolidate these views into one seamless hub with one source of truth. The single dependency is API access to the tools. The outcome is a transparent, real-time view of the GiftHealth program at Hugo, one that makes it easy for your teams and ours to make decisions in real time.</p>
+
     <div class="scroll-hint">↕ This slide scrolls</div>
   </section>
 
