@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hugo QA x GiftHealth · Lilly Chat · June 2026 MBR</title>
+<title>Hugo QA x Gifthealth · Lilly Chat · June 2026 MBR</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -65,6 +65,17 @@
     margin-top:24px;border-left:3px solid var(--green);padding:4px 0 4px 18px;
     font-family:var(--display);font-size:clamp(16px,1.7vw,20px);font-weight:500;max-width:58ch;
   }
+
+  /* ---------- executive summary ---------- */
+  .exec{
+    background:var(--mint);border:1px solid #C9E2D4;border-left:4px solid var(--green);
+    padding:20px 24px;margin-top:24px;max-width:900px;
+  }
+  .exec .xk{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);font-weight:600;display:block;margin-bottom:10px}
+  .exec ul{list-style:none}
+  .exec li{font-size:13.5px;line-height:1.55;color:var(--ink-soft);padding:5px 0 5px 18px;position:relative}
+  .exec li::before{content:"→";position:absolute;left:0;color:var(--green);font-size:12px}
+  .exec li b{color:var(--ink)}
 
   /* ---------- story cover ---------- */
   .story-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px;margin-top:26px}
@@ -309,7 +320,15 @@
       <div class="mono-label">Quality Assurance Program · June 2026 MBR</div>
     </div>
     <h1 class="reveal r2" style="margin-top:26px;font-size:clamp(32px,4.6vw,58px)">The QA layer behind<br>Lilly Chat.</h1>
-    <p class="lede reveal r2" style="margin-top:14px">We launched the Lilly workflow in December 2025 as a chat-only operation and layered on a dedicated QA team from the start, to ensure every patient conversation met the same clinical, compliance, and experience standard from the very first ticket.</p>
+
+    <div class="exec reveal r2">
+      <span class="xk">Executive summary</span>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--ink-soft)"><b style="color:var(--ink)">Dedicated QA is one of the main reasons this program performs.</b> In January, quality scores sat below 80% and CSAT near 76%. Through a 2.5x scale-up, with constant QA focus and coaching, <b style="color:var(--ink)">quality now sits above 94% and CSAT above 93%</b>. The link holds at the agent level too: agents with higher QA scores consistently earn higher CSAT.</p>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--ink-soft);margin-top:10px"><b style="color:var(--ink)">That layer is about to be outgrown.</b> Lilly Voice is expanding, and total agents across chat and voice are heading past 500, while 8 QAs cover the program today.</p>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--ink-soft);margin-top:10px"><b style="color:var(--ink)">The decision this deck supports:</b> grow QA coverage in step with the program in the short term, pending Gifthealth Auto QA, and align our layer with Gifthealth's broader QA roadmap. The rest of this deck is the evidence.</p>
+    </div>
+
+    <p class="lede reveal r2" style="margin-top:22px">How we got here: we launched the Lilly workflow in December 2025 as a chat-only operation and layered on a dedicated QA team from the start, to ensure every patient conversation met the same clinical, compliance, and experience standard from the very first ticket.</p>
 
     <div class="story-grid">
       <div class="sblock reveal r3">
@@ -329,7 +348,7 @@
       </div>
       <div class="sblock reveal r4">
         <span class="sk">What it enables</span>
-        <p>Our QA layer is one of the primary reasons <b>CSAT has held above 90% consistently</b>, and it gives new hires the review density they need to ramp fast. The volume of sampling lets us maintain a <b>maximum 1:20 QA-to-agent ratio</b>.</p>
+        <p>Our QA layer is one of the primary reasons <b>CSAT has climbed from about 76% in January to above 93% today</b>, holding above 90% since April. The link is measurable: <b>agents with higher QA scores consistently earn higher CSAT</b>. It also gives new hires the review density they need to ramp fast. The volume of sampling lets us maintain a <b>maximum 1:20 QA-to-agent ratio</b>.</p>
       </div>
       <div class="sblock reveal r4">
         <span class="sk">Why a dedicated team</span>
@@ -342,7 +361,7 @@
     </div>
 
     <div class="statband reveal r5">
-      <div class="stat"><b>90%+</b><span>CSAT, held consistently</span></div>
+      <div class="stat"><b>93%+</b><span>CSAT today, up from ~76% in Jan</span></div>
       <div class="stat"><b>94.9%</b><span>QA composite · June, ▲ 0.5 vs May</span></div>
       <div class="stat"><b>1,421</b><span>full-depth reviews in June · 178 agents</span></div>
       <div class="stat"><b>1:20</b><span>max QA-to-agent ratio</span></div>
@@ -434,7 +453,7 @@
     <p class="lede reveal r2">Everything the system described on the cover produced in June, in one live view. Scroll within this slide; search any agent by name.</p>
     <div class="dash-frame reveal r3">
       <div class="dash-titlebar">
-        <span class="crumbs">Hugo Intelligence Hub · GiftHealth · Lilly Chat · June 2026 vs May 2026</span>
+        <span class="crumbs">Hugo Intelligence Hub · Gifthealth · Lilly Chat · June 2026 vs May 2026</span>
         <span class="live">Live · hub.hugoinc.com</span>
       </div>
 
@@ -585,11 +604,11 @@
         <div class="m"><b>~25 QAs</b><span>what holding that ratio at 500+ agents requires</span></div>
       </div>
 
-      <p class="roadmap-note"><b>Inside your roadmap, not beside it.</b> We know GiftHealth has its own QA roadmap, and nothing here is a proposal to build outside of it. What we're showing is the system that's already working, and where we can plug it into your plans. Whatever direction that roadmap takes, one thing holds today: as long as reviews stay manual at this depth, coverage scales with people.</p>
+      <p class="roadmap-note"><b>Inside your roadmap, not beside it.</b> We know Gifthealth has its own QA roadmap, and nothing here is a proposal to build outside of it. What we're showing is the system that's already working, and where we can plug it into your plans. Whatever direction that roadmap takes, one thing holds today: as long as reviews stay manual at this depth, coverage scales with people.</p>
 
       <div class="next">
         <div class="next-item"><div class="k">Extend</div><p>Bring the proven framework (pillars, sampling discipline, 100% DSAT review, safety floor) to Lilly Voice the same way it works with Chat.</p></div>
-        <div class="next-item"><div class="k">Scale</div><p>Pending the rollout of GiftHealth Auto QA, grow the QA team from 8 toward ~25 in step with agent headcount, holding the 1:20 ratio so depth never dilutes as volume triples.</p></div>
+        <div class="next-item"><div class="k">Scale</div><p>Pending the rollout of Gifthealth Auto QA, grow the QA team from 8 toward ~25 in step with agent headcount, holding the 1:20 ratio so depth never dilutes as volume triples.</p></div>
         <div class="next-item"><div class="k">Align</div><p>Co-plan with your QA team so our layer supports and accelerates your plans rather than duplicating them:</p>
           <ul>
             <li>Extend Hugo QA to your other teams and vendors so the standard is uniform across the program</li>
@@ -602,14 +621,14 @@
     </div>
     <div class="eyebrow reveal r6" style="margin-top:38px">05 · Closing thought</div>
     <h2 class="reveal r6" style="font-size:clamp(22px,2.6vw,34px)">A partnership built on data intelligence.</h2>
-    <p class="lede reveal r6">Everything in this deck, from the QA scorecard to the coaching loop to the trends that steer training, exists because we build our client programs on data intelligence. QA is one of four intelligence views we have built for GiftHealth as the program grew:</p>
+    <p class="lede reveal r6">Everything in this deck, from the QA scorecard to the coaching loop to the trends that steer training, exists because we build our client programs on data intelligence. QA is one of four intelligence views we have built for Gifthealth as the program grew:</p>
     <div class="sig-grid" style="margin-top:18px">
       <div class="sig"><span class="k" style="color:var(--slate)">View I</span><h3>Billing</h3><p>Detailed billing with per-agent performance.</p></div>
       <div class="sig"><span class="k" style="color:var(--slate)">View II</span><h3>Scorecard</h3><p>Program scorecard view.</p></div>
       <div class="sig"><span class="k" style="color:var(--slate)">View III</span><h3>Performance Management Hub</h3><p>Agent, TL, and site performance management.</p></div>
       <div class="sig" style="border-color:var(--green)"><span class="k" style="color:var(--green)">View IV</span><h3>QA Dashboard</h3><p>The quality layer covered in this proposal.</p></div>
     </div>
-    <p class="thesis reveal r6" style="margin-top:22px">We want to consolidate these views into one seamless hub with one source of truth. The single dependency is API access to the tools. The outcome is a transparent, real-time view of the GiftHealth program at Hugo, one that makes it easy for your teams and ours to make decisions in real time.</p>
+    <p class="thesis reveal r6" style="margin-top:22px">We want to consolidate these views into one seamless hub with one source of truth. The single dependency is API access to the tools. The outcome is a transparent, real-time view of the Gifthealth program at Hugo, one that makes it easy for your teams and ours to make decisions in real time.</p>
 
     <div class="scroll-hint">↕ This slide scrolls</div>
   </section>
